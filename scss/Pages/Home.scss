@@ -1,0 +1,59 @@
+@import '../theme';
+@import '../utils';
+
+#home-page__wrapper {
+  max-height: 100%;
+}
+
+#home-page__wrapper .glass-card__wrapper .ant-card-body {
+  & .weather-forecast,
+  .weather-meta__section {
+    display: flex;
+    justify-content: space-between;
+    padding: $section-padding 0;
+    box-sizing: border-box;
+
+    section,
+    div {
+      flex: 1;
+    }
+    header {
+      flex: 2;
+      font-size: 3rem;
+      color: $white;
+      text-shadow: $text-shadow-slight;
+      font-weight: bold;
+      text-align: center;
+    }
+  }
+
+  & .weather-meta__section {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .weather-card__wrapper {
+    margin: 0 0.5rem;
+  }
+
+  .favorites-section {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    .favorites-button {
+      height: 6rem;
+      width: 6rem;
+      margin-right: $section-padding/2;
+
+      i {
+        transform: scale(3.75);
+      }
+    }
+  }
+}
+
+.glass-section__searchbar {
+  display: flex;
+  justify-content: center;
+}

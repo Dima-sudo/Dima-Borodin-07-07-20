@@ -1,0 +1,65 @@
+@import '../theme';
+
+// Standard variant
+.weather-card__wrapper {
+  box-sizing: border-box;
+  width: 235px;
+  max-width: 250px;
+  min-width: 135px;
+  transition: all 0.3s;
+
+  &:hover {
+    transform: scale(1.025);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  }
+}
+
+.ant-card-meta-title {
+  font-size: 1.2rem;
+  color: $black85;
+  text-shadow: $text-shadow-slight;
+  text-align: center;
+}
+
+.ant-card-meta-description {
+  font-size: 1.1rem;
+  color: $black45;
+  text-align: center;
+}
+
+.ant-card-head-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+// Thumbnail variant
+#weather-thumbnail__wrapper {
+  display: flex;
+  span {
+    margin-left: $section-margin/2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+    p {
+      margin-bottom: 0;
+      font-size: 1rem;
+      color: $white;
+      text-shadow: $text-shadow-slight;
+
+      &:nth-child(1) {
+        font-size: 2rem;
+        font-weight: bold;
+      }
+
+      // &:nth-child(3) {
+      //   font-weight: bold;
+      // }
+    }
+  }
+
+  img {
+    height: 9rem;
+    width: 9rem;
+  }
+}
