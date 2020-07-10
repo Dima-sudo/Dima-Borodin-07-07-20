@@ -40,6 +40,10 @@
   font-weight: 700;
 }
 
+.ant-card-cover .flag-image__cover {
+  transform: scale(0.5);
+}
+
 // Thumbnail variant
 #weather-thumbnail__wrapper {
   display: flex;
@@ -66,8 +70,4 @@
     height: 9rem;
     width: 9rem;
   }
-}
-
-.ant-card-cover .flag-image__cover {
-  transform: scale(0.625);
 }

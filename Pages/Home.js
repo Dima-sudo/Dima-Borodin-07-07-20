@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import vars from '../Resources/Objects/Variables';
 import { getImageType, fahrenheitToCelsius } from '../Utils/helpers';
 import { connect } from 'react-redux';
@@ -6,11 +6,10 @@ import moment from 'moment';
 
 import {
   get_Current_Conditions,
-  get_Current_City_Conditions,
+  get_Full_Info_By_Name,
   add_Favorite,
   remove_Favorite
 } from '../Redux/Actions/Locations';
-import { toggleLoading } from '../Redux/Actions/Utils';
 
 import WeatherCard from '../Components/WeatherCard';
 import Glass from '../Components/Glass';
@@ -21,22 +20,21 @@ import Loader from '../Components/Loader';
 import '../scss/Pages/Home.scss';
 
 function Home(props) {
-  const [key, setKey] = useState(vars.DEFAULT_LOCATION_KEY);
+  const theme = props.theme === 'dark' ? 'dark' : 'light';
 
   useEffect(() => {
     let name;
+
     props.CurrentCity
       ? (name = props.CurrentCity.EnglishName)
       : (name = `${vars.DEFAULT_LOCATION_STRING}`);
 
-    const fetchConditions = async () => {
-      console.log('Entering fetchConditions with name of: ' + name);
-      await props.get_Current_City_Conditions(name);
-      setKey(props.CurrentKey);
+    const fetchPageData = async () => {
+      await props.get_Full_Info_By_Name(name);
     };
 
-    fetchConditions();
-  }, [key]);
+    fetchPageData();
+  }, []);
 
   const renderFavoritesButton = () => {
     let isDanger = false;
@@ -56,6 +54,7 @@ function Home(props) {
       <FavoritesButton
         type='primary'
         onClick={() => props.add_Favorite(props.CurrentCity)}
+        theme={theme}
       />
     );
   };
@@ -66,8 +65,6 @@ function Home(props) {
   let curCelsius = props.CurrentConditions
     ? props.CurrentConditions.Temperature.Metric.Value
     : null;
-
-  const theme = props.theme === 'dark' ? 'dark' : 'light';
 
   return (
     <main id='home-page__wrapper' className='container'>
@@ -148,10 +145,11 @@ const mapStateToProps = store => {
     CurrentConditions: store.Locations.CurrentConditions,
     CurrentCity: store.Locations.CurrentCity,
     CurrentForecast: store.Locations.CurrentForecast,
-    isLoading: store.Utils.isLoading,
+    isLoading: store.Locations.isLoading,
     isCelsius: store.Utils.isCelsius,
     Favorites: store.Locations.Favorites,
-    theme: store.Utils.theme
+    theme: store.Utils.theme,
+    User: store.User
   };
 };
 
@@ -160,7 +158,6 @@ export default React.memo(
     add_Favorite,
     remove_Favorite,
     get_Current_Conditions,
-    toggleLoading,
-    get_Current_City_Conditions
+    get_Full_Info_By_Name
   })(Home)
 );

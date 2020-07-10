@@ -5,7 +5,7 @@ import { Button, Tooltip } from 'antd';
 
 import '../scss/Components/FavoritesButton.scss';
 
-const FavoritesButton = ({ onClick, type }) => {
+const FavoritesButton = ({ onClick, type, theme }) => {
   const heartIcon = <i className='fas fa-heart' />;
   const brokenHeartIcon = <i className='fas fa-heart-broken' />;
 
@@ -15,7 +15,9 @@ const FavoritesButton = ({ onClick, type }) => {
         type='primary'
         shape='circle'
         icon={heartIcon}
-        className='favorites-button'
+        className={`favorites-button${
+          theme === 'dark' ? ' favorites-button__dark' : ''
+        }`}
         onClick={onClick}
       />
     </Tooltip>
@@ -25,7 +27,9 @@ const FavoritesButton = ({ onClick, type }) => {
         type='danger'
         shape='circle'
         icon={brokenHeartIcon}
-        className='favorites-button'
+        className={`favorites-button${
+          theme === 'dark' ? ' favorites-button__dark' : ''
+        }`}
         onClick={onClick}
         danger
       />
@@ -35,7 +39,8 @@ const FavoritesButton = ({ onClick, type }) => {
 
 FavoritesButton.propTypes = {
   type: PropTypes.oneOf(['primary', 'danger']).isRequired,
-  onClick: PropTypes.func.isRequired
+  onClick: PropTypes.func.isRequired,
+  theme: PropTypes.oneOf(['dark', 'light'])
 };
 
 export default FavoritesButton;

@@ -5,7 +5,8 @@ export default (
     drawerVisible: false,
     cloudAnimationVisible: true,
     theme: 'light',
-    hasValidApiKey: true
+    hasValidApiKey: true,
+    isFirstRender: true
   },
   action
 ) => {
@@ -22,6 +23,8 @@ export default (
       return { ...state, theme: state.theme === 'light' ? 'dark' : 'light' };
     case 'INVALIDATE_API_KEY':
       return { ...state, hasValidApiKey: false };
+    case 'TURN_OFF_FIRST_RENDER':
+      return { ...state, isFirstRender: false };
 
     default:
       return { ...state };

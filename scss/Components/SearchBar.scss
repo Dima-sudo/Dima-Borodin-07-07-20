@@ -1,4 +1,11 @@
+@import '../theme';
+
 .auto-complete__searchbar {
   width: 30rem;
   max-width: 80%;
+}
+
+.ant-input-wrapper .ant-input-group-addon .ant-btn.ant-input-search-button {
+  background: $primary-color-light;
+  border: $primary-color-light;
 }

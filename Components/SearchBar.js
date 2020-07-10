@@ -5,8 +5,7 @@ import vars from '../Resources/Objects/Variables';
 
 import { connect } from 'react-redux';
 import { get_Auto_Complete } from '../Redux/Actions/Queries';
-import { toggleLoading } from '../Redux/Actions/Utils';
-import { get_Current_City_Conditions } from '../Redux/Actions/Locations';
+import { get_Full_Info_By_Name } from '../Redux/Actions/Locations';
 
 import { Input, AutoComplete } from 'antd';
 
@@ -34,7 +33,7 @@ const SearchBar = props => {
   };
 
   const onSubmit = async () => {
-    await props.get_Current_City_Conditions(query);
+    await props.get_Full_Info_By_Name(query);
   };
 
   return (
@@ -68,8 +67,9 @@ const mapStateToProps = store => {
   };
 };
 
-export default connect(mapStateToProps, {
-  get_Auto_Complete,
-  toggleLoading,
-  get_Current_City_Conditions
-})(SearchBar);
+export default React.memo(
+  connect(mapStateToProps, {
+    get_Auto_Complete,
+    get_Full_Info_By_Name
+  })(SearchBar)
+);

@@ -1,7 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 
-import { invalidateApiKey, toggleLoading } from './Utils';
+import { invalidateApiKey, turnOffFirstRender } from './Utils';
+import { setCoordinates } from './Users';
 
 import { message, notification } from 'antd';
 import { SmileOutlined, InfoCircleOutlined } from '@ant-design/icons';
@@ -18,13 +19,6 @@ export const get_Current_Conditions = key => {
     let res;
     try {
       res = await axios.get(`${CONDITIONS_BASE_URL}/${key}?apikey=${API_KEY}`);
-
-      if (res.status === 200) {
-        message.success(
-          'Fetched current coditions successfully',
-          vars.NOTIFICATION_DURATION_SHORT
-        );
-      }
 
       const action = {
         type: 'CURRENT_CONDITIONS',
@@ -43,57 +37,38 @@ export const get_Current_Conditions = key => {
         `Couldn't fetch city via KEY. Error: ${err.message}`,
         vars.NOTIFICATION_DURATION_MEDIUM
       );
-    }
 
-    console.log('Response is: ');
-    console.log(res);
+      dispatch(toggleLoading());
+    }
   };
 };
 
-export const get_Current_City_Conditions = name => {
-  return async dispatch => {
-    let res;
+// Main action, calls smaller actions and manages the full flow
+export const get_Full_Info_By_Name = name => {
+  return async (dispatch, getState) => {
     try {
-      await dispatch(toggleLoading());
-      // Fetch city for key
-      res = await axios.get(
-        `${LOCATIONS_BASE_URL}/cities/search?apikey=${API_KEY}&q=${name}`
-      );
+      const { isFirstRender } = getState().Utils;
+      dispatch(toggleLoading());
 
-      // If no results are found
-      if (res.data.length === 0) {
-        message.info(
-          `We're sorry we couldn't find that, try something else`,
-          vars.NOTIFICATION_DURATION_MEDIUM
+      if (isFirstRender) {
+        // Geolocation on first render only
+        dispatch(turnOffFirstRender());
+        await navigator.geolocation.getCurrentPosition(
+          async position => {
+            _Fetch_Data_By_Geolocation(position, dispatch);
+          },
+          // If user blocked request for geolocation continue as usual
+          async () => {
+            _Fetch_Data_By_Name(name, dispatch);
+          }
         );
-
-        return;
+      } else {
+        _Fetch_Data_By_Name(name, dispatch);
       }
-
-      let action = {
-        type: 'CURRENT_CITY',
-        payload: res.data[0]
-      };
-
-      dispatch(action);
-
-      console.log(res);
-
-      const key = res.data[0].Key;
-
-      // Set current key
-      dispatch(set_Current_Key(key));
-
-      // Fetch conditions
-      dispatch(get_Current_Conditions(key));
-
-      //Fetch forecast
-      dispatch(get_Forecast(key));
-
-      await dispatch(toggleLoading());
     } catch (err) {
+      dispatch(invalidateApiKey());
       message.error(
-        `Couldn't fetch currently selected city's conditions. Error: ${err.message}`,
+        `Couldn't complete data fetch. Error: ${err.message}`,
         vars.NOTIFICATION_DURATION_MEDIUM
       );
     }
@@ -120,9 +95,6 @@ export const get_Forecast = key => {
         type: 'CURRENT_FORECAST',
         payload: res.data.DailyForecasts
       };
-
-      console.log('res is');
-      console.log(res);
 
       dispatch(action);
     } catch (err) {
@@ -151,11 +123,13 @@ export const add_Favorite = city => {
 export const remove_Favorite = city => {
   return (dispatch, getState) => {
     const currentFavorites = getState().Locations.Favorites;
-    if (currentFavorites.length === 0) return;
+    let filteredFavorites;
 
-    const filteredFavorites = currentFavorites.filter(favorite => {
-      return favorite.EnglishName !== city.EnglishName;
-    });
+    if (currentFavorites.length !== 0) {
+      filteredFavorites = currentFavorites.filter(favorite => {
+        return favorite.EnglishName !== city.EnglishName;
+      });
+    }
 
     const action = {
       type: 'REMOVE_FAVORITE',
@@ -184,4 +158,76 @@ export const set_Current_City = city => {
     type: 'SET_CURRENT_CITY',
     payload: city
   };
+};
+
+export const toggleLoading = () => {
+  return {
+    type: 'LOCATIONS_IS_LOADING'
+  };
+};
+
+/*
+  Helper private functions. Not intended for outside use. Used for fetching the full home-page data flow.
+*/
+const _Fetch_Data_By_Name = async (name, dispatch) => {
+  // Fetch city for key
+  const res = await axios.get(
+    `${LOCATIONS_BASE_URL}/cities/search?apikey=${API_KEY}&q=${name}`
+  );
+
+  // If no results are found
+  if (res.data.length === 0) {
+    message.info(
+      `We're sorry we couldn't find that, try something else`,
+      vars.NOTIFICATION_DURATION_MEDIUM
+    );
+
+    dispatch(toggleLoading());
+    return;
+  }
+
+  const action = {
+    type: 'CURRENT_CITY',
+    payload: res.data[0]
+  };
+
+  dispatch(action);
+
+  const key = res.data[0].Key;
+
+  // Set current key
+  dispatch(set_Current_Key(key));
+
+  // Fetch conditions
+  dispatch(get_Current_Conditions(key));
+
+  //Fetch forecast
+  dispatch(get_Forecast(key));
+};
+
+const _Fetch_Data_By_Geolocation = async (position, dispatch) => {
+  await dispatch(
+    setCoordinates(position.coords.latitude, position.coords.longitude)
+  );
+
+  const res = await axios.get(
+    `${LOCATIONS_BASE_URL}/cities/geoposition/search?apikey=${API_KEY}&q=${position.coords.latitude},${position.coords.longitude}`
+  );
+
+  const action = {
+    type: 'CURRENT_CITY',
+    payload: res.data
+  };
+
+  dispatch(action);
+
+  const key = res.data.Key;
+  // Set current key
+  dispatch(set_Current_Key(key));
+
+  // Fetch conditions
+  dispatch(get_Current_Conditions(key));
+
+  //Fetch forecast
+  dispatch(get_Forecast(key));
 };

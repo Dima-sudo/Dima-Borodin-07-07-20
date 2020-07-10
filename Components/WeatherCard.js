@@ -88,7 +88,7 @@ const WeatherCard = ({
           <img
             className='flag-image__cover'
             alt='flag-image'
-            src={`${process.env.FLAGS_BASE_URL}/${countryId}/shiny/64.png`}
+            src={`${process.env.FLAGS_BASE_URL}/${countryId}/flat/64.png`}
           />
         ) : (
           <img alt='weather-image' src={image} />

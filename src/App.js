@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route, Switch, BrowserRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { setCoordinates } from '../Redux/Actions/Users';
+import { get_City_By_Geolocation } from '../Redux/Actions/Locations';
 
 // Components
 import Navbar from '../Components/Navbar';
@@ -12,19 +14,19 @@ import Home from '../Pages/Home';
 import Favorites from '../Pages/Favorites';
 import Error from '../Pages/Error';
 
-// Libraries & Misc.
 import '../scss/App.scss';
 
-function App(props) {
+const App = props => {
   const theme = props.theme === 'dark' ? 'dark' : 'light';
   const { hasValidApiKey } = props;
+
   return (
     <main id='app-container'>
       {hasValidApiKey ? (
         <BrowserRouter>
           <Navbar theme={theme} />
 
-          <AnimatedClouds visible={true} />
+          <AnimatedClouds />
 
           <Drawer />
 
@@ -38,7 +40,7 @@ function App(props) {
       )}
     </main>
   );
-}
+};
 
 const mapStateToProps = store => {
   return {
@@ -47,4 +49,6 @@ const mapStateToProps = store => {
   };
 };
 
-export default React.memo(connect(mapStateToProps)(App));
+export default React.memo(
+  connect(mapStateToProps, { setCoordinates, get_City_By_Geolocation })(App)
+);

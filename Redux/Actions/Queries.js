@@ -15,9 +15,6 @@ export const get_Auto_Complete = query => {
         `${LOCATIONS_BASE_URL}/cities/autocomplete?apikey=${API_KEY}&q=${query}`
       );
 
-      console.log('Autocomplete response is :');
-      console.log(res.data);
-
       const formatted_City_List = [];
 
       // Format

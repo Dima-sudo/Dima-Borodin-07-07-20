@@ -33,3 +33,10 @@ export const invalidateApiKey = () => {
     type: 'INVALIDATE_API_KEY'
   };
 };
+
+// Determines when to fetch via geolocation
+export const turnOffFirstRender = () => {
+  return {
+    type: 'TURN_OFF_FIRST_RENDER'
+  };
+};

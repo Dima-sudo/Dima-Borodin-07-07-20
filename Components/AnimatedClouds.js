@@ -58,25 +58,6 @@ const AnimatedClouds = ({ visible }) => {
       >
         <div className='cloud' />
       </div>
-
-      <br />
-
-      <div
-        className='cloud-instance__7'
-        aria-labelledby='cloud-decoration-animated-7'
-      >
-        <div className='cloud' />
-      </div>
-
-      <br />
-      <br />
-
-      <div
-        className='cloud-instance__8'
-        aria-labelledby='cloud-decoration-animated-8'
-      >
-        <div className='cloud' />
-      </div>
     </div>
   ) : null;
 };

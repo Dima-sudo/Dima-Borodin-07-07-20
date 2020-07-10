@@ -11,13 +11,13 @@ function Error(props) {
   const { Error } = Icons;
 
   return (
-    <main id='error-page__wrapper' className='container'>
+    <main id='error-page__wrapper' className='container slide-in'>
       <Glass theme={theme} className='error-section__wrapper'>
         <h1 className='error-heading__text'>Whoops! Sorry about that.</h1>
         <p className='error-description__text'>
-          Thanks for using the app! It looks like you've reached the daily limit
-          of the free API key. Feel free to reach out and I'll provide a new
-          one.
+          Thanks for using the app! It looks like there was a server-side error
+          or perhaps you've reached the daily limit of the free API key. Feel
+          free to reach out and I'll provide a new one.
         </p>
         <span className='error-image__wrapper'>
           <img src={Error} className='error-image' alt='error-image' />

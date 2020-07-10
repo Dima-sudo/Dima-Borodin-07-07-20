@@ -1,12 +1,11 @@
 import React from 'react';
-import { Link, Redirect, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import {
   reset_Saved_Conditions,
   set_Current_City
 } from '../Redux/Actions/Locations';
-import { toggleLoading } from '../Redux/Actions/Utils';
 
 import Glass from '../Components/Glass';
 import WeatherCard from '../Components/WeatherCard';
@@ -73,7 +72,6 @@ const mapStateToProps = store => {
 export default React.memo(
   connect(mapStateToProps, {
     reset_Saved_Conditions,
-    set_Current_City,
-    toggleLoading
+    set_Current_City
   })(Favorites)
 );
