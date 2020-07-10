@@ -8,6 +8,7 @@ Created for the Herolo interview process home assignment. Implemented with React
 Tech Stack:
 ===========
 - React/Hooks
+- Webpack
 - Redux
 - RxJS
 - Moment.js
