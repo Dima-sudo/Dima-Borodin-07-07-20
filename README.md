@@ -1,5 +1,5 @@
 # Dima-Borodin-07-07-20
-The Weather App to rule them all. Created for the Herolo interview process home assignment. Implemented with React/Redux and AccuWeather API.
+Created for the Herolo interview process home assignment. Implemented with React/Redux and AccuWeather API.
 
 ###############################################################
 # Live Version: https://react-animated-weather.herokuapp.com/ #
