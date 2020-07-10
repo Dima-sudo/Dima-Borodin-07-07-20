@@ -10,6 +10,8 @@ import { get_Current_City_Conditions } from '../Redux/Actions/Locations';
 
 import { Input, AutoComplete } from 'antd';
 
+import '../scss/Components/SearchBar.scss';
+
 const SearchBar = props => {
   const [query, setQuery] = useState('');
 
@@ -32,27 +34,26 @@ const SearchBar = props => {
   };
 
   const onSubmit = async () => {
-    await props.toggleLoading();
     await props.get_Current_City_Conditions(query);
-    await props.toggleLoading();
   };
 
   return (
     <AutoComplete
       dropdownMatchSelectWidth={252}
-      style={{
-        width: '30rem'
-      }}
-      // Options receive an array of objects of shape {value: xxxx, label: yyyy}
+      className='auto-complete__searchbar'
+      // Options receive an array of objects of shape {value: x, label: y, key: z}
       options={props.curQuery}
       onSelect={onSelect}
+      onChange={value => {
+        setQuery(value);
+      }}
       on
       id='city-search__box'
     >
       <Input.Search
         aria-describedby='city-search-box'
         size='large'
-        placeholder='input here'
+        placeholder='What is your favorite place?'
         enterButton
         onSearch={onSubmit}
       />

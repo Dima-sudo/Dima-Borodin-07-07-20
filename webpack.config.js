@@ -56,9 +56,8 @@ module.exports = {
             options: {
               javascriptEnabled: true,
               modifyVars: {
-                // 'primary-color': 'rgba(24, 144, 255, 0.85)', // primary color for all components
-                // 'link-color': 'rgba(24, 144, 255, 0.85)', // link color
-                // 'border-radius-base': '6px' // major border radius
+                'border-radius-base': '8px',
+                'primary-color': '#27578a'
               }
             }
           }

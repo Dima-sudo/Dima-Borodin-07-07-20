@@ -1,0 +1,23 @@
+@import '../theme';
+@import '../utils';
+
+#favorites-page__wrapper {
+  max-height: 100%;
+  position: relative;
+  z-index: $z-top-layer;
+  padding-bottom: $section-padding * 2;
+}
+
+.grid-cell__wrapper {
+  padding-bottom: $grid-item-padding-bottom;
+  display: flex;
+  justify-content: center;
+}
+
+.heading-text {
+  text-align: center;
+  font-size: 3rem;
+  color: $white;
+  text-shadow: $text-shadow-slight;
+  font-weight: bold;
+}

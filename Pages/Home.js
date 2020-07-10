@@ -1,72 +1,63 @@
 import React, { useEffect, useState } from 'react';
 import vars from '../Resources/Objects/Variables';
+import { getImageType, fahrenheitToCelsius } from '../Utils/helpers';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
 import {
-  get_City_By_Text,
   get_Current_Conditions,
-  get_Current_City_Conditions
+  get_Current_City_Conditions,
+  add_Favorite,
+  remove_Favorite
 } from '../Redux/Actions/Locations';
 import { toggleLoading } from '../Redux/Actions/Utils';
 
 import WeatherCard from '../Components/WeatherCard';
 import Glass from '../Components/Glass';
 import SearchBar from '../Components/SearchBar';
-import { Button, Tooltip } from 'antd';
+import FavoritesButton from '../Components/FavoritesButton';
+import Loader from '../Components/Loader';
 
 import '../scss/Pages/Home.scss';
 
 function Home(props) {
-  const heartIcon = <i className='fas fa-heart' />;
   const [key, setKey] = useState(vars.DEFAULT_LOCATION_KEY);
 
   useEffect(() => {
+    let name;
+    props.CurrentCity
+      ? (name = props.CurrentCity.EnglishName)
+      : (name = `${vars.DEFAULT_LOCATION_STRING}`);
+
     const fetchConditions = async () => {
-      await props.toggleLoading();
-
-      let name;
-      props.CurrentCity
-        ? (name = props.CurrentCity.EnglishName)
-        : (name = `${vars.DEFAULT_LOCATION_STRING}`);
-
+      console.log('Entering fetchConditions with name of: ' + name);
       await props.get_Current_City_Conditions(name);
       setKey(props.CurrentKey);
-
-      await props.toggleLoading();
     };
-    console.log('key is');
-    console.log(key);
+
     fetchConditions();
   }, [key]);
 
-  // Maps the API image codes(int) and returns a String of the image type to render
-  const getImageType = integer => {
-    // Wanted to use my own assets, another approach would be to use the images on the API's website
-    // Codes according to the API docs
-    if (integer <= 5 || integer == 30) return 'Sunny';
-    if (
-      (integer > 5 && integer <= 11) ||
-      integer == 20 ||
-      integer == 32 ||
-      integer == 35
-    )
-      return 'Cloudy';
-    if (integer == 14 || integer == 17 || integer == 21) return 'SunnyRain';
-    if (integer == 15 || integer == 16 || integer == 41 || integer == 42)
-      return 'Storm';
-    if ((integer > 11 && integer <= 19) || integer == 39 || integer == 40)
-      return 'Rain';
-    if (
-      (integer > 21 && integer <= 29) ||
-      integer == 31 ||
-      integer == 43 ||
-      integer == 44
-    )
-      return 'Snow';
-    if (integer > 32 && integer <= 38) return 'Moon';
+  const renderFavoritesButton = () => {
+    let isDanger = false;
 
-    return null;
+    if (props.Favorites.length > 0) {
+      props.Favorites.forEach(city => {
+        if (props.CurrentCity.EnglishName === city.EnglishName) isDanger = true;
+      });
+    }
+
+    return isDanger ? (
+      <FavoritesButton
+        type='danger'
+        onClick={() => props.remove_Favorite(props.CurrentCity)}
+      />
+    ) : (
+      <FavoritesButton
+        type='primary'
+        onClick={() => props.add_Favorite(props.CurrentCity)}
+      />
+    );
   };
 
   let curFahrenheit = props.CurrentConditions
@@ -76,19 +67,22 @@ function Home(props) {
     ? props.CurrentConditions.Temperature.Metric.Value
     : null;
 
+  const theme = props.theme === 'dark' ? 'dark' : 'light';
+
   return (
     <main id='home-page__wrapper' className='container'>
       {props.isLoading ||
       !props.CurrentCity ||
       !props.CurrentConditions ||
       !props.CurrentForecast ? (
-        <div>Loading....</div>
+        <Loader />
       ) : (
         <>
-          <Glass className='glass-section__searchbar'>
+          <Glass className='glass-section__searchbar slide-in' theme={theme}>
             <SearchBar />
           </Glass>
-          <Glass>
+
+          <Glass className='slide-in' theme={theme}>
             <section className='weather-meta__section'>
               <WeatherCard
                 type={getImageType(props.CurrentConditions.WeatherIcon)}
@@ -101,14 +95,7 @@ function Home(props) {
               />
               <header>{props.CurrentConditions.WeatherText}</header>
               <section className='favorites-section'>
-                <Tooltip title='Add to favorites? :)'>
-                  <Button
-                    type='primary'
-                    shape='circle'
-                    icon={heartIcon}
-                    className='favorites-button'
-                  />
-                </Tooltip>
+                {renderFavoritesButton()}
               </section>
             </section>
             <section className='weather-forecast'>
@@ -119,10 +106,21 @@ function Home(props) {
                 // Day of the week
                 const day = moment.unix(item.EpochDate).format('dddd');
 
+                // API provides 5 day forecast temps in fahrenheit only, convert the values to celsius if that mode is selected
+                const weatherDegrees = props.isCelsius
+                  ? `${fahrenheitToCelsius(
+                      item.Temperature.Minimum.Value
+                    )} | ${fahrenheitToCelsius(
+                      item.Temperature.Maximum.Value
+                    )}C`
+                  : `${item.Temperature.Minimum.Value} | ${item.Temperature.Maximum.Value}F`;
+                //
+
                 return isDay ? (
                   <WeatherCard
                     type={getImageType(item.Day.Icon)}
                     currentWeather={item.Day.IconPhrase}
+                    weatherDegrees={weatherDegrees}
                     name={day}
                     key={item.EpochDate}
                   />
@@ -130,6 +128,7 @@ function Home(props) {
                   <WeatherCard
                     type={getImageType(item.Night.Icon)}
                     currentWeather={item.Night.IconPhrase}
+                    weatherDegrees={weatherDegrees}
                     name={day}
                     key={item.EpochDate}
                   />
@@ -150,13 +149,18 @@ const mapStateToProps = store => {
     CurrentCity: store.Locations.CurrentCity,
     CurrentForecast: store.Locations.CurrentForecast,
     isLoading: store.Utils.isLoading,
-    isCelsius: store.Utils.isCelsius
+    isCelsius: store.Utils.isCelsius,
+    Favorites: store.Locations.Favorites,
+    theme: store.Utils.theme
   };
 };
 
-export default connect(mapStateToProps, {
-  get_City_By_Text,
-  get_Current_Conditions,
-  toggleLoading,
-  get_Current_City_Conditions
-})(Home);
+export default React.memo(
+  connect(mapStateToProps, {
+    add_Favorite,
+    remove_Favorite,
+    get_Current_Conditions,
+    toggleLoading,
+    get_Current_City_Conditions
+  })(Home)
+);

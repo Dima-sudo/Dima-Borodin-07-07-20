@@ -1,0 +1,29 @@
+@import '../theme';
+
+.drawer-menu__item {
+  display: flex;
+  align-items: center;
+  padding-bottom: $section-padding;
+  padding-top: $section-padding;
+  transition: background-color 0.2s;
+  border-radius: $global-border-radius/2;
+
+  &:hover {
+    background-color: $secondary-color-light;
+  }
+
+  .drawer-menu__switch {
+    margin-left: auto;
+    margin-right: 1rem;
+  }
+
+  h3 {
+    color: $black85;
+    font-size: 1.1rem;
+    margin-left: 1rem;
+  }
+}
+
+.ant-drawer-title {
+  color: $black65;
+}

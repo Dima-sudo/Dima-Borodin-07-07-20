@@ -6,6 +6,7 @@ import Rain from '../Svg/Rain.svg';
 import Storm from '../Svg/Storm.svg';
 import Moon from '../Svg/Moon.svg';
 import Snow from '../Svg/Snow.svg';
+import Error from '../Svg/Error.svg';
 
 export default {
   Sunny,
@@ -15,5 +16,6 @@ export default {
   Rain,
   Storm,
   Moon,
-  Snow
+  Snow,
+  Error
 };

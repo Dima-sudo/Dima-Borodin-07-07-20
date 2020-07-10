@@ -1,0 +1,51 @@
+@import '../theme';
+@import '../utils';
+
+#error-page__wrapper {
+  min-height: 100vh;
+  position: relative;
+  z-index: $z-top-layer;
+  padding-bottom: $section-padding * 2;
+  padding-top: $section-padding * 4;
+}
+
+.error-heading__text {
+  text-align: center;
+  font-size: 3rem;
+  color: $white;
+  text-shadow: $text-shadow-slight;
+  font-weight: bold;
+}
+
+.error-description__text {
+  text-align: center;
+  font-size: 1.5rem;
+  color: $white;
+  text-shadow: $text-shadow-slight;
+}
+
+.error-section__wrapper {
+  margin-top: $section-margin;
+}
+
+.error-image__wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  .error-image {
+    height: 30rem;
+    width: 30rem;
+  }
+}
+
+@media (max-width: $mobile-break-point) {
+  #error-page__wrapper {
+    padding-top: $section-padding;
+  }
+
+  .error-image__wrapper .error-image {
+    height: 20rem;
+    width: 20rem;
+  }
+}

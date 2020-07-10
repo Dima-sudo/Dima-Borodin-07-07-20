@@ -9,8 +9,16 @@
   transition: all 0.3s;
 
   &:hover {
-    transform: scale(1.025);
-    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+    @include raise-animation;
+  }
+
+  .ant-card-actions {
+    border-radius: $global-border-radius;
+  }
+
+  .ant-card-head-title {
+    color: $black65;
+    text-align: center;
   }
 }
 
@@ -51,10 +59,6 @@
         font-size: 2rem;
         font-weight: bold;
       }
-
-      // &:nth-child(3) {
-      //   font-weight: bold;
-      // }
     }
   }
 
@@ -62,4 +66,8 @@
     height: 9rem;
     width: 9rem;
   }
+}
+
+.ant-card-cover .flag-image__cover {
+  transform: scale(0.625);
 }

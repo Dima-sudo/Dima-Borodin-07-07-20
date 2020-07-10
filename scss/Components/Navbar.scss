@@ -37,9 +37,31 @@ li.ant-menu-item {
   background-color: $white25;
   display: flex;
   justify-content: space-around;
+  position: relative;
+  z-index: $z-top-layer;
 }
 
 .ant-menu-horizontal > .ant-menu-item-active,
 .ant-menu-horizontal > .ant-menu-item-selected {
   border-bottom: 2px solid $white !important;
+}
+
+.ant-menu-item.ant-menu-item-only-child.navbar-hamburger__wrapper {
+  border: none !important;
+}
+
+#navbar-hamburger__button {
+  transform: scale(1.7);
+  transition: transform 0.2s;
+  color: $white;
+  text-shadow: $text-shadow-slight;
+
+  &:hover {
+    transform: scale(2);
+  }
+}
+
+.ant-menu.ant-menu-root.navbar-theme__dark {
+  background-color: $primary-color-dark;
+  box-shadow: $box-shadow-slight;
 }

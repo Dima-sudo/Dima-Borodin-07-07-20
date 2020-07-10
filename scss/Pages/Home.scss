@@ -3,6 +3,14 @@
 
 #home-page__wrapper {
   max-height: 100%;
+  position: relative;
+  z-index: $z-top-layer;
+
+  div.app-loader__icon {
+    display: flex;
+    justify-content: center;
+    margin-top: $section-margin * 6;
+  }
 }
 
 #home-page__wrapper .glass-card__wrapper .ant-card-body {
@@ -40,20 +48,47 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-
-    .favorites-button {
-      height: 6rem;
-      width: 6rem;
-      margin-right: $section-padding/2;
-
-      i {
-        transform: scale(3.75);
-      }
-    }
   }
 }
 
 .glass-section__searchbar {
   display: flex;
   justify-content: center;
+
+  div.ant-card-body {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+@media (max-width: $mobile-break-point) {
+  #home-page__wrapper
+    .glass-card__wrapper
+    .ant-card-body
+    .weather-meta__section {
+    flex-direction: column;
+
+    section,
+    div {
+      display: flex;
+      justify-content: center;
+    }
+
+    header {
+      margin-top: $section-margin;
+      margin-bottom: $section-margin;
+    }
+  }
+
+  #home-page__wrapper .glass-card__wrapper .ant-card-body {
+    & .weather-forecast {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      div.weather-card__wrapper {
+        margin-bottom: $section-margin;
+      }
+    }
+  }
 }

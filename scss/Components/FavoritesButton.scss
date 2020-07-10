@@ -1,0 +1,12 @@
+@import '../theme';
+
+.favorites-button {
+  height: 6rem;
+  width: 6rem;
+  margin-right: $section-padding/2;
+
+  i {
+    transform: scale(3.75);
+    margin-top: 0.625rem;
+  }
+}

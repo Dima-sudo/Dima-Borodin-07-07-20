@@ -1,4 +1,9 @@
 // Colors
+$primary-color-light: #00b3ff;
+$secondary-color-light: #ddf5ff;
+
+$primary-color-dark: #27578a;
+
 $black90: rgba(0, 0, 0, 0.9);
 $black85: rgba(0, 0, 0, 0.85);
 $black65: rgba(0, 0, 0, 0.65);
@@ -13,7 +18,59 @@ $white25: rgba(255, 255, 255, 0.25);
 // Spacing
 $section-margin: 2.5rem;
 $section-padding: 1.25rem;
+$grid-item-padding-bottom: 2.5rem;
 
-// Text shadow
+// Border-radius
+$global-border-radius: 8px;
+
+// Z layers
+$z-top-layer: 10;
+
+// Text shadows
 $text-shadow-slight: 0px 1px 1px rgba(0, 0, 0, 0.2),
   0px 2px 3.5px rgba(0, 0, 0, 0.05), 0px 4.5px 6px rgba(0, 0, 0, 0.05);
+
+// Box shadows
+$box-shadow-slight: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+$box-shadow-medium: 0 10px 20px rgba(0, 0, 0, 0.19),
+  0 6px 6px rgba(0, 0, 0, 0.23);
+$box-shadow-strong: 0 14px 28px rgba(0, 0, 0, 0.25),
+  0 10px 10px rgba(0, 0, 0, 0.22);
+
+// Media Queries
+$mobile-break-point: 992px;
+
+// Animations & Transitions
+@mixin raise-animation {
+  transform: scale(1.025);
+  box-shadow: $box-shadow-strong;
+}
+
+.slide-in {
+  animation: slide-in 0.6s ease-out;
+}
+.slide-in-side {
+  animation: slide-in-side 0.6s ease-out;
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+@keyframes slide-in-side {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+}
