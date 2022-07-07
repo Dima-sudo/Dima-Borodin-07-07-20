@@ -37,7 +37,7 @@
     "dotenv-webpack": "^1.8.0",
     "extract-text-webpack-plugin": "^3.0.2",
     "less": "^3.11.3",
-    "moment": "^2.27.0",
+    "moment": "^2.29.4",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
